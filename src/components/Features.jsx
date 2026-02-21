@@ -45,7 +45,7 @@ const Features = () => {
                         <span className="text-gradient-cyan">Intelligent Bots</span>
                     </h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.125rem' }}>
-                        Tunexbot uses state-of-the-art browser automation to simulate real human behavior, ensuring every hit counts towards your success.
+                        TuNeXbot uses state-of-the-art browser automation to simulate real human behavior, ensuring every hit counts towards your success.
                     </p>
                 </div>
 

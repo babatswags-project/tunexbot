@@ -8,9 +8,9 @@ const LegalPage = ({ title, children }) => {
     return (
         <>
             <Header />
-            <main style={{ paddingTop: '120px', minHeight: '100vh', paddingBottom: '4rem' }}>
+            <main style={{ paddingTop: '140px', minHeight: '100vh', paddingBottom: '4rem' }}>
                 <div className="container" style={{ maxWidth: '800px' }}>
-                    <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', marginBottom: '2rem', fontWeight: 500 }}>
+                    <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', marginBottom: '2rem', fontWeight: 500, padding: '0.5rem 0' }}>
                         <ArrowLeft size={16} /> Back to Home
                     </a>
                     <h1 className="outfit-font text-gradient" style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '2rem' }}>

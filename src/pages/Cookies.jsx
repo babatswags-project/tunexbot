@@ -5,7 +5,7 @@ const Cookies = () => {
     return (
         <LegalPage title="Cookie Policy">
             <p style={{ marginBottom: '1.5rem' }}>
-                This Cookie Policy explains how Tunexbot uses cookies and similar technologies to recognize you when you visit our website.
+                This Cookie Policy explains how TuNeXbot uses cookies and similar technologies to recognize you when you visit our website.
             </p>
 
             <h3 className="outfit-font" style={{ color: 'white', fontSize: '1.5rem', marginBottom: '1rem', marginTop: '2rem' }}>What are cookies?</h3>

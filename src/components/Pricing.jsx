@@ -161,16 +161,20 @@ const Pricing = () => {
 
             {/* Login Required Modal */}
             {showLoginModal && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-                    background: 'rgba(5, 7, 12, 0.8)', backdropFilter: 'blur(10px)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, padding: '1rem'
-                }}>
-                    <div style={{
-                        background: 'rgba(15, 20, 30, 0.95)', border: '1px solid rgba(139, 92, 246, 0.3)',
-                        borderRadius: '16px', padding: '2.5rem', maxWidth: '450px', width: '100%',
-                        boxShadow: '0 25px 50px rgba(0,0,0,0.5)', animation: 'fadeInScale 0.3s ease-out forwards', textAlign: 'center'
+                <div
+                    onClick={() => setShowLoginModal(false)}
+                    style={{
+                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
+                        background: 'rgba(5, 7, 12, 0.8)', backdropFilter: 'blur(10px)',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, padding: '1rem'
                     }}>
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: 'rgba(15, 20, 30, 0.95)', border: '1px solid rgba(139, 92, 246, 0.3)',
+                            borderRadius: '16px', padding: '2.5rem', maxWidth: '450px', width: '100%',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.5)', animation: 'fadeInScale 0.3s ease-out forwards', textAlign: 'center'
+                        }}>
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', color: 'var(--neon-violet-light)' }}>
                             <User size={48} />
                         </div>
@@ -179,7 +183,7 @@ const Pricing = () => {
                             Please log in or create a free account before upgrading your plan. This ensures your premium subscription is securely linked to your bot dashboard.
                         </p>
                         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <button onClick={() => setShowLoginModal(false)} className="btn" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', flex: 1, minWidth: '100px' }}>
+                            <button onClick={() => setShowLoginModal(false)} type="button" className="btn" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', flex: 1, minWidth: '100px', padding: '1rem' }}>
                                 Cancel
                             </button>
                             <Link to="/login" className="btn btn-outline" style={{ flex: 1.5, display: 'flex', justifyContent: 'center', minWidth: '120px' }}>

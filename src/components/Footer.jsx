@@ -11,9 +11,9 @@ const Footer = () => {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                            <img src={logo} alt="Tunexbot Logo" style={{ height: '36px', width: 'auto' }} />
+                            <img src={logo} alt="TuNeXbot Logo" style={{ height: '36px', width: 'auto' }} />
                             <span className="outfit-font text-gradient" style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-                                Tunexbot
+                                TuNeXbot
                             </span>
                         </a>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '280px' }}>
@@ -45,7 +45,7 @@ const Footer = () => {
 
                 <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', paddingTop: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', textAlign: 'center', width: '100%' }}>
-                        &copy; 2026 Tunexbot. All rights reserved.
+                        &copy; 2026 TuNeXbot. All rights reserved.
                     </p>
                 </div>
 

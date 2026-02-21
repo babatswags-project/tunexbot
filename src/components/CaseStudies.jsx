@@ -11,7 +11,7 @@ const CaseStudies = () => {
                         Success <span className="text-gradient-pink">Stories</span>
                     </h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.125rem', maxWidth: '600px', margin: '0 auto' }}>
-                        See how creators and webmasters are leveraging Tunexbot to overcome the algorithm and kickstart their revenue.
+                        See how creators and webmasters are leveraging TuNeXbot to overcome the algorithm and kickstart their revenue.
                     </p>
                 </div>
 
@@ -32,7 +32,7 @@ const CaseStudies = () => {
                         </h3>
 
                         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '2rem' }}>
-                            "I was creating high-quality gaming content, but the algorithm wasn't picking it up. I was stuck at 50 views a video. By integrating Tunexbot on the Primary Pro plan with my own proxies, I generated enough organic-looking initial traction to trigger YouTube's recommended feed. I hit my 4,000 watch hours in three weeks and got monetized."
+                            "I was creating high-quality gaming content, but the algorithm wasn't picking it up. I was stuck at 50 views a video. By integrating TuNeXbot on the Primary Pro plan with my own proxies, I generated enough organic-looking initial traction to trigger YouTube's recommended feed. I hit my 4,000 watch hours in three weeks and got monetized."
                         </p>
 
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -59,7 +59,7 @@ const CaseStudies = () => {
                         </h3>
 
                         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '2rem' }}>
-                            "Getting Google AdSense approval is great, but earning $0 a day because you have zero traffic is brutal. I setup Tunexbot's 'Any' function to autonomously search and click through my new tech blog. The intelligent browsing simulation drove thousands of unique hits daily, instantly turning my dormant site into a functioning revenue stream."
+                            "Getting Google AdSense approval is great, but earning $0 a day because you have zero traffic is brutal. I setup TuNeXbot's 'Any' function to autonomously search and click through my new tech blog. The intelligent browsing simulation drove thousands of unique hits daily, instantly turning my dormant site into a functioning revenue stream."
                         </p>
 
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -5,7 +5,7 @@ const FAQ = () => {
     const faqs = [
         {
             q: "Do you provide proxies for the bots?",
-            a: "No, we do not provide proxies. Tunexbot is a pure automation software platform. You will need to securely integrate your own residential or private proxies into the bot to ensure your traffic remains undetected and diverse."
+            a: "No, we do not provide proxies. TuNeXbot is a pure automation software platform. You will need to securely integrate your own residential or private proxies into the bot to ensure your traffic remains undetected and diverse."
         },
         {
             q: "What is the difference between XPath Mode and \"Any\" Mode?",
@@ -36,7 +36,7 @@ const FAQ = () => {
                         <HelpCircle className="text-gradient" size={36} /> Frequently Asked Questions
                     </h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.125rem' }}>
-                        Everything you need to know about how Tunexbot operates.
+                        Everything you need to know about how TuNeXbot operates.
                     </p>
                 </div>
 

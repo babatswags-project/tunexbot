@@ -147,14 +147,14 @@ const Dashboard = () => {
     if (loading) return null;
 
     return (
-        <div style={{ paddingTop: '120px', paddingBottom: '4rem', minHeight: '100vh', position: 'relative' }}>
+        <div style={{ paddingTop: '140px', paddingBottom: '4rem', minHeight: '100vh', position: 'relative' }}>
             {/* Background elements */}
             <div className="bg-shape shape-1" style={{ top: '10%', right: '0%' }}></div>
             <div className="bg-shape shape-2" style={{ bottom: '10%', left: '0%' }}></div>
 
             <div className="container" style={{ maxWidth: '1000px' }}>
 
-                <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', marginBottom: '2rem', fontWeight: 500 }}>
+                <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', marginBottom: '2rem', fontWeight: 500, padding: '0.5rem 0' }}>
                     <ArrowLeft size={16} /> Back to Home
                 </a>
 
@@ -183,7 +183,7 @@ const Dashboard = () => {
                             </div>
 
                             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                This is your private key. Enter this key into the Tunexbot desktop agent to authenticate your session.
+                                This is your private key. Enter this key into the TuNeXbot desktop agent to authenticate your session.
                             </p>
 
                             {apiMsg.text && (
@@ -366,17 +366,21 @@ const Dashboard = () => {
 
             {/* Upgrade Modal */}
             {showUpgradeModal && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-                    background: 'rgba(5, 7, 12, 0.8)', backdropFilter: 'blur(10px)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, padding: '1rem'
-                }}>
-                    <div style={{
-                        background: 'rgba(15, 20, 30, 0.95)', border: '1px solid rgba(139, 92, 246, 0.3)',
-                        borderRadius: '16px', padding: '2.5rem', maxWidth: '500px', width: '100%',
-                        boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(139, 92, 246, 0.15)',
-                        animation: 'fadeInScale 0.3s ease-out forwards'
+                <div
+                    onClick={() => setShowUpgradeModal(false)}
+                    style={{
+                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
+                        background: 'rgba(5, 7, 12, 0.8)', backdropFilter: 'blur(10px)',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, padding: '1rem'
                     }}>
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: 'rgba(15, 20, 30, 0.95)', border: '1px solid rgba(139, 92, 246, 0.3)',
+                            borderRadius: '16px', padding: '2.5rem', maxWidth: '500px', width: '100%',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(139, 92, 246, 0.15)',
+                            animation: 'fadeInScale 0.3s ease-out forwards'
+                        }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: 'var(--neon-violet-light)' }}>
                             <CreditCard size={32} />
                             <h3 className="outfit-font" style={{ fontSize: '1.75rem', fontWeight: 700, margin: 0, color: 'white' }}>Select Upgrade Plan</h3>
@@ -406,7 +410,7 @@ const Dashboard = () => {
                             </button>
                         </div>
 
-                        <button onClick={() => setShowUpgradeModal(false)} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.05)', color: 'white' }}>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setShowUpgradeModal(false); }} className="btn" style={{ width: '100%', background: 'rgba(255,255,255,0.05)', color: 'white', padding: '1rem' }}>
                             Cancel
                         </button>
                     </div>

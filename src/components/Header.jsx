@@ -15,9 +15,9 @@ const Header = () => {
 
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }} onClick={() => setIsMobileMenuOpen(false)}>
-          <img src={logo} alt="Tunexbot Logo" style={{ height: '36px', width: 'auto' }} />
+          <img src={logo} alt="TuNeXbot Logo" style={{ height: '36px', width: 'auto' }} />
           <span className="outfit-font text-gradient" style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
-            Tunexbot
+            TuNeXbot
           </span>
         </Link>
 

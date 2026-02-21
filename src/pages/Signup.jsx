@@ -52,7 +52,7 @@ const Signup = () => {
 
             <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem', margin: '2rem', zIndex: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                    <img src={logo} alt="Tunexbot Logo" style={{ height: '48px', width: 'auto' }} />
+                    <img src={logo} alt="TuNeXbot Logo" style={{ height: '48px', width: 'auto' }} />
                 </div>
                 <h2 className="outfit-font" style={{ fontSize: '2rem', fontWeight: 800, color: 'white', marginBottom: '0.5rem', textAlign: 'center' }}>
                     Create an Account

@@ -6,7 +6,7 @@ const RefundPolicy = () => {
         <LegalPage title="Refund Policy">
             <h3 className="outfit-font" style={{ color: 'white', fontSize: '1.5rem', marginBottom: '1rem' }}>No Refunds Policy</h3>
             <p style={{ marginBottom: '1.5rem' }}>
-                At Tunexbot, we offer a fully functional <strong>Free Plan</strong> that allows you to test and experience our bot automation, proxy routing, and traffic generation software before making any financial commitment.
+                At TuNeXbot, we offer a fully functional <strong>Free Plan</strong> that allows you to test and experience our bot automation, proxy routing, and traffic generation software before making any financial commitment.
             </p>
             <p style={{ marginBottom: '1.5rem' }}>
                 Because of this verifiable free tier, we maintain a strict <strong>No Refund</strong> policy for all paid subscriptions (Primary Pro and Secondary Pro).

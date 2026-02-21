@@ -10,7 +10,7 @@ const Header = () => {
   const currentUser = authService.getCurrentUser();
 
   return (
-    <header className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000 }}>
+    <header className="glass-panel" style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '80px' }}>
 
         {/* Logo */}
@@ -55,10 +55,10 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div style={{
           position: 'fixed',
-          top: '80px',
+          top: 'calc(80px + env(safe-area-inset-top))',
           left: 0,
           width: '100%',
-          height: 'calc(100vh - 80px)',
+          height: 'calc(100vh - 80px - env(safe-area-inset-top))',
           padding: '2rem',
           display: 'flex',
           flexDirection: 'column',

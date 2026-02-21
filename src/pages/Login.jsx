@@ -47,7 +47,7 @@ const Login = () => {
             <div className="bg-shape shape-1" style={{ top: '-10%', right: '-10%' }}></div>
             <div className="bg-shape shape-2" style={{ bottom: '-10%', left: '-10%' }}></div>
 
-            <Link to="/" style={{ position: 'absolute', top: '2rem', left: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', fontWeight: 500, zIndex: 10 }}>
+            <Link to="/" style={{ position: 'absolute', top: 'calc(1rem + env(safe-area-inset-top))', left: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', fontWeight: 500, zIndex: 10, padding: '0.5rem' }}>
                 <ArrowLeft size={16} /> Back to Home
             </Link>
 

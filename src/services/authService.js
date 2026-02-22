@@ -144,18 +144,6 @@ export const authService = {
 
     // Password reset request
     resetPassword: async (email) => {
-        // First check if the user actually exists in our database
-        const { data: userProfile, error: profileError } = await supabase
-            .from('profiles')
-            .select('email')
-            .eq('email', email)
-            .maybeSingle();
-
-        if (profileError || !userProfile) {
-            throw new Error("This email is not registered. Please sign up first.");
-        }
-
-        // If they do exist, proceed with sending the reset email
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin + '/reset-password',
         });

@@ -89,12 +89,12 @@ const Header = () => {
               <User size={20} /> Dashboard
             </Link>
           ) : (
-            <>
-              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'white', fontSize: '1.5rem', fontWeight: 600, textAlign: 'center', padding: '0.5rem 0' }}>Log In</Link>
-              <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary" style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '1rem', fontSize: '1.25rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-outline" style={{ flex: 1, display: 'flex', justifyContent: 'center', padding: '1rem', fontSize: '1.1rem' }}>Log In</Link>
+              <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary" style={{ flex: 1, display: 'flex', justifyContent: 'center', padding: '1rem', fontSize: '1.1rem' }}>
                 Get Started
               </Link>
-            </>
+            </div>
           )}
         </div>
       )}

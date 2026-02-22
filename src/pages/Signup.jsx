@@ -40,19 +40,19 @@ const Signup = () => {
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem', paddingTop: 'calc(5rem + env(safe-area-inset-top))', position: 'relative', overflowX: 'hidden' }}>
 
             {/* Background Shapes */}
             <div className="bg-shape shape-1" style={{ top: '-10%', right: '-10%' }}></div>
             <div className="bg-shape shape-2" style={{ bottom: '-10%', left: '-10%' }}></div>
 
-            <div style={{ position: 'absolute', top: 'calc(1rem + env(safe-area-inset-top))', left: '1rem', zIndex: 10 }}>
-                <Link to="/" className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
-                    <ArrowLeft size={16} /> Back
+            <div style={{ position: 'fixed', top: 'calc(1rem + env(safe-area-inset-top))', left: '1rem', zIndex: 100 }}>
+                <Link to="/" className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(7, 9, 15, 0.9)', backdropFilter: 'blur(10px)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '0.6rem 1rem', fontSize: '0.9rem', boxShadow: '0 4px 6px rgba(0,0,0,0.3)' }}>
+                    <ArrowLeft size={16} /> Back to Home
                 </Link>
             </div>
 
-            <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem', margin: '2rem', zIndex: 10 }}>
+            <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem', margin: 'auto', zIndex: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
                     <img src={logo} alt="TuNeXbot Logo" style={{ height: '48px', width: 'auto' }} />
                 </div>

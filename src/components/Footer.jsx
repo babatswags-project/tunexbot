@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../assets/logo.svg';
+import { Mail, MessageCircle } from 'lucide-react';
 import { WHATSAPP_LINK } from '../config';
 
 const Footer = () => {
@@ -38,6 +39,22 @@ const Footer = () => {
                             <li><a href="/legal/privacy" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Privacy Policy</a></li>
                             <li><a href="/legal/cookies" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Cookie Policy</a></li>
                             <li><a href="/legal/refund" style={{ color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Refund Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="outfit-font" style={{ fontSize: '1.125rem', fontWeight: 600, color: 'white', marginBottom: '1.25rem' }}>Contact Us</h4>
+                        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <li>
+                                <a href="mailto:support@tunexbot.com" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+                                    <Mail size={16} /> support@tunexbot.com
+                                </a>
+                            </li>
+                            <li>
+                                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+                                    <MessageCircle size={16} /> WhatsApp Support
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

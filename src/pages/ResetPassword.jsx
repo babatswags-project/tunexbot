@@ -12,12 +12,24 @@ const ResetPassword = () => {
     const [success, setSuccess] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    // Track if we actually have the recovery token
+    // Track if we actually have the recovery token, or if there's an error
     const [hasToken, setHasToken] = useState(false);
+    const [urlError, setUrlError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
+        // Check for error parameters in the URL hash (from Supabase if token is expired/invalid)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const errorDescription = hashParams.get('error_description');
+
+        if (errorDescription) {
+            // Reformat "+"" signs to spaces for readability
+            setUrlError(errorDescription.replace(/\+/g, ' '));
+            setHasToken(false);
+            return;
+        }
+
         // Supabase appends access_token to the hash or passes it as a query param
         // Depending on the flow, we just verify auth session is present (since we click the link to reset)
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -86,7 +98,11 @@ const ResetPassword = () => {
                 {!hasToken ? (
                     <>
                         <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '2.5rem' }}>
-                            Invalid or expired reset link. Please request a new password reset from the login page.
+                            {urlError ? (
+                                <span style={{ color: '#EF4444' }}>{urlError}. Please request a new password reset from the login page.</span>
+                            ) : (
+                                "Invalid or expired reset link. Please request a new password reset from the login page."
+                            )}
                         </p>
                         <button onClick={() => navigate('/login')} className="btn btn-primary" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                             Go to Login

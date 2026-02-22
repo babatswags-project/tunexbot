@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronRight, Menu, X, User } from 'lucide-react';
+import { ChevronRight, Menu, X, User, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { authService } from '../services/authService';
@@ -31,6 +31,9 @@ const Header = () => {
 
         {/* CTA */}
         <div style={{ display: 'none', alignItems: 'center', gap: '1rem' }} className="desktop-cta">
+          <a href="#" className="btn" onClick={(e) => { e.preventDefault(); alert("PC Software download link will be available soon!"); }} style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Download size={16} /> Download
+          </a>
           {currentUser ? (
             <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <User size={16} /> Dashboard
@@ -76,6 +79,10 @@ const Header = () => {
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'white', fontSize: '1.5rem', fontWeight: 600, padding: '0.5rem 0' }}>Support</a>
 
           <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '1rem 0' }}></div>
+
+          <a href="#" onClick={(e) => { e.preventDefault(); alert("PC Software download link will be available soon!"); setIsMobileMenuOpen(false); }} className="btn" style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '1rem', fontSize: '1.1rem', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Download size={20} /> Download PC App
+          </a>
 
           {currentUser ? (
             <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary" style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '1rem', fontSize: '1.25rem', marginTop: '1rem', gap: '0.5rem' }}>

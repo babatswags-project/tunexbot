@@ -46,12 +46,11 @@ const Hero = () => {
                 </div>
 
                 <h1 className="outfit-font" style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-                    Supercharge Your <br />
-                    <span className="text-gradient">Digital Traffic</span> At Scale
+                    Advanced <span className="text-gradient">Traffic & Engagement</span> <br /> Software
                 </h1>
 
                 <p style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 3rem auto', lineHeight: 1.6 }}>
-                    The ultimate bot system to generate high-quality traffic for your websites, monetized platforms, and YouTube channels. Maximize views and earn more funds effortlessly.
+                    The ultimate advanced bot software to generate high-quality traffic for your websites, monetized platforms, and YouTube channels. Maximize views and earn more funds effortlessly.
                 </p>
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>

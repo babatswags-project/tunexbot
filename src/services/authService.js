@@ -145,7 +145,7 @@ export const authService = {
     // Password reset request
     resetPassword: async (email) => {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/reset-password',
+            redirectTo: 'https://tunexbot.com/reset-password',
         });
 
         if (error) {

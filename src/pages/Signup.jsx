@@ -46,9 +46,11 @@ const Signup = () => {
             <div className="bg-shape shape-1" style={{ top: '-10%', right: '-10%' }}></div>
             <div className="bg-shape shape-2" style={{ bottom: '-10%', left: '-10%' }}></div>
 
-            <Link to="/" style={{ position: 'absolute', top: 'calc(1rem + env(safe-area-inset-top))', left: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--neon-cyan)', fontWeight: 500, zIndex: 10, padding: '0.5rem' }}>
-                <ArrowLeft size={16} /> Back to Home
-            </Link>
+            <div style={{ position: 'absolute', top: 'calc(1rem + env(safe-area-inset-top))', left: '1rem', zIndex: 10 }}>
+                <Link to="/" className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
+                    <ArrowLeft size={16} /> Back
+                </Link>
+            </div>
 
             <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem', margin: '2rem', zIndex: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>

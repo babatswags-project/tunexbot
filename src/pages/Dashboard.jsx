@@ -192,12 +192,12 @@ const Dashboard = () => {
                                 </div>
                             )}
 
-                            <div style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-                                <code style={{ color: 'var(--neon-cyan)', fontSize: '1.1rem', wordBreak: 'break-all', fontFamily: 'monospace' }}>
+                            <div style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', overflow: 'hidden' }}>
+                                <code style={{ color: 'var(--neon-cyan)', fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)', wordBreak: 'break-all', overflowWrap: 'break-word', fontFamily: 'monospace', letterSpacing: showApiKey ? 'normal' : '2px', flex: 1 }}>
                                     {user?.apiKey ? (showApiKey ? user.apiKey : '••••••••••••••••••••••••') : 'No Key'}
                                 </code>
                                 {user?.apiKey && (
-                                    <button onClick={() => setShowApiKey(!showApiKey)} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'} title={showApiKey ? "Hide Key" : "Reveal Key"}>
+                                    <button onClick={() => setShowApiKey(!showApiKey)} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem', transition: 'color 0.2s', flexShrink: 0 }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'} title={showApiKey ? "Hide Key" : "Reveal Key"}>
                                         {showApiKey ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
                                 )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 
 const FAQ = () => {
@@ -22,10 +22,30 @@ const FAQ = () => {
         {
             q: "Do you offer refunds if I am not satisfied?",
             a: "No. We offer a robust Free Plan specifically so you can test our bot automation and see how it works for your use-case. Because you can verify our service for free, we enforce a strict No Refund policy on paid subscriptions."
+        },
+        {
+            q: "How do I download the TuNeXbot PC software?",
+            a: "The PC software download link is currently being finalized and will be available very soon directly from your dashboard or the navigation menu."
+        },
+        {
+            q: "Can I run TuNeXbot on a Mac or Linux?",
+            a: "Currently, the TuNeXbot desktop client is exclusively optimized for Windows operating systems to ensure maximum performance and security."
         }
     ];
 
     const [openIndex, setOpenIndex] = useState(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (openIndex !== null) {
+                setOpenIndex(null);
+            }
+        };
+
+        // Add scroll listener, use passive for better scrolling performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [openIndex]);
 
     return (
         <section id="faq" className="section" style={{ position: 'relative', marginTop: '2rem' }}>

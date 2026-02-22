@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Activity, Youtube, Globe } from 'lucide-react';
+import { ArrowRight, Activity, Youtube, Globe, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AnimatedStat = ({ endValue, suffix = '+', duration = 2000, decimals = 1 }) => {
@@ -57,8 +57,8 @@ const Hero = () => {
                     <Link to="/signup" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.125rem' }}>
                         Start Generating Traffic <ArrowRight size={20} />
                     </Link>
-                    <a href="#features" className="btn btn-outline" style={{ padding: '1rem 2.5rem', fontSize: '1.125rem' }}>
-                        Explore Features
+                    <a href="#" onClick={(e) => { e.preventDefault(); alert("PC Software download link will be available soon!"); }} className="btn btn-outline" style={{ padding: '1rem 2.5rem', fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Download size={20} /> Download PC App
                     </a>
                 </div>
 

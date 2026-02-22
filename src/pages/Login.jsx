@@ -27,7 +27,7 @@ const Login = () => {
         try {
             if (isResetting) {
                 await authService.resetPassword(formData.email);
-                setMsg('Password reset email sent! Check your inbox.');
+                setMsg('Password reset email sent! Check your inbox and spam folder.');
                 setIsResetting(false);
             } else {
                 await authService.login(formData.email, formData.password);

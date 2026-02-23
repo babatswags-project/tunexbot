@@ -167,28 +167,13 @@ export const authService = {
 
     // Synchronize local session with latest DB data (useful for plan/api key changes)
     syncUserFromDB: async () => {
-        let userId = null;
-        let sessionEmail = null;
-
         const { data: { session } } = await supabase.auth.getSession();
-
-        if (session && session.user && session.user.id) {
-            userId = session.user.id;
-            sessionEmail = session.user.email;
-        } else {
-            const localUser = authService.getCurrentUser();
-            if (localUser && localUser.id) {
-                userId = localUser.id;
-                sessionEmail = localUser.email;
-            }
-        }
-
-        if (!userId) return null;
+        if (!session?.user?.id) return null;
 
         const { data: profileData, error } = await supabase
             .from('profiles')
             .select('*')
-            .eq('id', userId)
+            .eq('id', session.user.id)
             .single();
 
         if (error || !profileData) return null;
@@ -196,8 +181,8 @@ export const authService = {
         const { plan, expiresAt } = await authService._processPlanLogic(profileData);
 
         const user = {
-            id: userId,
-            email: sessionEmail || profileData.email,
+            id: session.user.id,
+            email: session.user.email,
             name: profileData.name,
             plan: plan,
             apiKey: profileData.api_key,
@@ -220,18 +205,8 @@ export const authService = {
 
     // Generate new unique API Key
     updateApiKey: async () => {
-        let userId = null;
         const { data: { session } } = await supabase.auth.getSession();
-        if (session && session.user && session.user.id) {
-            userId = session.user.id;
-        } else {
-            const localUser = authService.getCurrentUser();
-            if (localUser && localUser.id) {
-                userId = localUser.id;
-            }
-        }
-
-        if (!userId) throw new Error("Not logged in");
+        if (!session?.user?.id) throw new Error("Not logged in");
 
         let newKey;
         let isUnique = false;
@@ -259,7 +234,7 @@ export const authService = {
         const { error } = await supabase
             .from('profiles')
             .update({ api_key: newKey })
-            .eq('id', userId);
+            .eq('id', session.user.id);
 
         if (error) {
             console.error("API update error:", error);
@@ -273,36 +248,24 @@ export const authService = {
 
     // Update User Display Name
     updateName: async (newName) => {
-        let userId = null;
         const { data: { session } } = await supabase.auth.getSession();
-
-        if (session && session.user && session.user.id) {
-            userId = session.user.id;
-        } else {
-            const localUser = authService.getCurrentUser();
-            if (localUser && localUser.id) {
-                userId = localUser.id;
-            }
-        }
-
-        if (!userId) throw new Error("Not logged in");
+        if (!session?.user?.id) throw new Error("Not logged in");
         if (!newName || newName.trim() === '') throw new Error('Name cannot be empty');
 
         // Update in profiles table
         const { error: dbError } = await supabase
             .from('profiles')
             .update({ name: newName.trim() })
-            .eq('id', userId);
+            .eq('id', session.user.id);
 
         if (dbError) throw new Error("Failed to update name in database.");
 
         // Update in auth.users metadata (so it shows in the Supabase Dashboard "Users" tab)
-        // Note: this might fail if session is expired, but we can swallow the error
-        if (session) {
-            await supabase.auth.updateUser({
-                data: { display_name: newName.trim() }
-            });
-        }
+        const { error: authError } = await supabase.auth.updateUser({
+            data: { display_name: newName.trim() }
+        });
+
+        if (authError) throw new Error("Failed to update auth metadata.");
 
         // Sync and return
         return await authService.syncUserFromDB();

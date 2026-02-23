@@ -147,7 +147,7 @@ const Dashboard = () => {
     if (loading) return null;
 
     return (
-        <div style={{ paddingTop: '140px', paddingBottom: '4rem', minHeight: '100vh', position: 'relative' }}>
+        <div style={{ paddingTop: '140px', paddingBottom: '4rem', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
             {/* Background elements */}
             <div className="bg-shape shape-1" style={{ top: '10%', right: '0%' }}></div>
             <div className="bg-shape shape-2" style={{ bottom: '10%', left: '0%' }}></div>
@@ -397,7 +397,7 @@ const Dashboard = () => {
                                         <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>Primary Pro</div>
                                         <div style={{ fontSize: '0.85rem', color: 'var(--neon-violet-light)' }}>200 Bots + Cloud + Any Function</div>
                                     </div>
-                                    <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>$30/mo</div>
+                                    <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>$40/mo</div>
                                 </button>
                             )}
 

@@ -25,7 +25,7 @@ const Pricing = () => {
         },
         {
             name: 'Primary Pro',
-            price: '$30',
+            price: '$40',
             period: 'per month',
             desc: 'Ideal for growing websites and automated YouTube channels.',
             features: [

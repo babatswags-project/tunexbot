@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Key, User, CreditCard, RefreshCw, LogOut, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Edit2, Clock, Eye, EyeOff, Database } from 'lucide-react';
+import { Key, User, CreditCard, RefreshCw, LogOut, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Edit2, Clock, Eye, EyeOff, Database, Trash2 } from 'lucide-react';
 import { WHATSAPP_LINK } from '../config';
 
 const Dashboard = () => {
@@ -156,6 +156,22 @@ const Dashboard = () => {
             setDbUrlMsg({ text: 'Database URL successfully updated!', type: 'success' });
             setTimeout(() => {
                 setIsEditingDbUrl(false);
+                setDbUrlMsg({ text: '', type: '' });
+            }, 2000);
+        } catch (err) {
+            setDbUrlMsg({ text: err.message, type: 'error' });
+        }
+    };
+
+    const handleDisconnectDbUrl = async () => {
+        if (!window.confirm("Are you sure you want to disconnect your database?\nYour desktop connections will fail until you provide a new one.")) return;
+        setDbUrlMsg({ text: 'Disconnecting...', type: 'info' });
+        try {
+            const updatedUser = await authService.updateDatabaseUrl(null);
+            setUser(updatedUser);
+            setDbUrlInput('');
+            setDbUrlMsg({ text: 'Database disconnected.', type: 'success' });
+            setTimeout(() => {
                 setDbUrlMsg({ text: '', type: '' });
             }, 2000);
         } catch (err) {
@@ -340,13 +356,23 @@ const Dashboard = () => {
                                         <code style={{ color: user?.databaseUrl ? '#10B981' : 'var(--text-secondary)', fontSize: '0.95rem', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '70%' }}>
                                             {user?.databaseUrl ? 'postgresql://••••••••••••••••' : 'No Database Linked'}
                                         </code>
-                                        <button
-                                            onClick={() => setIsEditingDbUrl(true)}
-                                            disabled={user?.plan === 'Free Plan'}
-                                            style={{ background: 'transparent', border: 'none', color: user?.plan === 'Free Plan' ? 'var(--text-secondary)' : '#10B981', display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: user?.plan === 'Free Plan' ? 'not-allowed' : 'pointer', fontSize: '0.9rem', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
-                                        >
-                                            <Edit2 size={14} /> Update
-                                        </button>
+                                        {user?.databaseUrl ? (
+                                            <button
+                                                onClick={handleDisconnectDbUrl}
+                                                disabled={user?.plan === 'Free Plan'}
+                                                style={{ background: 'transparent', border: 'none', color: user?.plan === 'Free Plan' ? 'var(--text-secondary)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: user?.plan === 'Free Plan' ? 'not-allowed' : 'pointer', fontSize: '0.9rem', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
+                                            >
+                                                <Trash2 size={14} /> Disconnect
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => setIsEditingDbUrl(true)}
+                                                disabled={user?.plan === 'Free Plan'}
+                                                style={{ background: 'transparent', border: 'none', color: user?.plan === 'Free Plan' ? 'var(--text-secondary)' : '#10B981', display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: user?.plan === 'Free Plan' ? 'not-allowed' : 'pointer', fontSize: '0.9rem', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
+                                            >
+                                                <Edit2 size={14} /> Connect
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                                 {dbUrlMsg.text && (

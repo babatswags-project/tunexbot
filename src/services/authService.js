@@ -127,6 +127,7 @@ export const authService = {
                 plan: plan,
                 apiKey: profileData.api_key,
                 expiresAt: expiresAt,
+                databaseUrl: profileData.database_url,
                 createdAt: profileData.created_at
             };
 
@@ -187,6 +188,7 @@ export const authService = {
             plan: plan,
             apiKey: profileData.api_key,
             expiresAt: expiresAt,
+            databaseUrl: profileData.database_url,
             createdAt: profileData.created_at
         };
 
@@ -268,6 +270,28 @@ export const authService = {
         if (authError) throw new Error("Failed to update auth metadata.");
 
         // Sync and return
+        return await authService.syncUserFromDB();
+    },
+
+    // Update Database URL
+    updateDatabaseUrl: async (newDatabaseUrl) => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user?.id) throw new Error("Not logged in");
+
+        // Format to null if empty so DB holds a perfect null
+        const urlToSave = newDatabaseUrl && newDatabaseUrl.trim() !== '' ? newDatabaseUrl.trim() : null;
+
+        const { error } = await supabase
+            .from('profiles')
+            .update({ database_url: urlToSave })
+            .eq('id', session.user.id);
+
+        if (error) {
+            console.error("Database URL update error:", error);
+            throw new Error("Failed to update Database URL. Please try again.");
+        }
+
+        // Update local session
         return await authService.syncUserFromDB();
     }
 };

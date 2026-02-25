@@ -45,7 +45,7 @@ export const adminService = {
 
         if (error) {
             console.error("Admin upgrade error:", error);
-            throw new Error(`Failed to apply the ${newPlan} to the targeted user.`);
+            throw new Error(`Execution Failed: ${error.message || JSON.stringify(error)}`);
         }
 
         if (!data || data.length === 0) {

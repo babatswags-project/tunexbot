@@ -37,19 +37,18 @@ export const adminService = {
             updateData.downgraded_at = null; // Wipe out any lingering deletion timer!
         }
 
-        const { data, error } = await supabase
-            .from('profiles')
-            .update(updateData)
-            .eq('id', userId)
-            .select();
+        const { data, error } = await supabase.rpc('admin_update_user_plan', {
+            p_user_id: userId,
+            p_plan: updateData.plan,
+            p_database_url: updateData.database_url,
+            p_expires_at: updateData.expires_at,
+            p_downgraded_at: updateData.downgraded_at,
+            p_master_password: 'Tunex5445775445'
+        });
 
         if (error) {
             console.error("Admin upgrade error:", error);
             throw new Error(`Execution Failed: ${error.message || JSON.stringify(error)}`);
-        }
-
-        if (!data || data.length === 0) {
-            throw new Error(`Execution Blocked by Database RLS Policy! You must execute the SQL bypass command to edit another user's profile.`);
         }
 
         return updateData;

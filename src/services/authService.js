@@ -92,8 +92,8 @@ export const authService = {
             expiresAt = null;
             needsDbUpdate = true;
         }
-        // 4. Catch direct Admin/DB edits: If they are on a Pro Plan but downgraded_at is lingering, clear it
-        else if (plan !== 'Free Plan' && downgradedAt) {
+        // 4. Catch direct Admin/DB edits: If they are on Secondary Pro Plan but downgraded_at is lingering, clear it
+        else if (plan === 'Secondary Pro' && downgradedAt) {
             downgradedAt = null;
             needsDbUpdate = true;
         }

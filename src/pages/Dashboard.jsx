@@ -57,12 +57,14 @@ const Dashboard = () => {
                 setDbUrlInput(freshUser.databaseUrl || '');
 
                 // Identify if they recently downgraded and have locked Pro groups pending deletion
-                if (freshUser.plan === 'Free Plan' && freshUser.downgradedAt) {
+                if ((freshUser.plan === 'Free Plan' || freshUser.plan === 'Primary Pro') && freshUser.downgradedAt) {
                     try {
                         const groups = await authService.fetchUserGroups(freshUser.apiKey);
                         const proGroups = groups.filter(g => g.plan_type === 'Pro');
-                        if (proGroups.length > 0) {
-                            setLockedProGroups(proGroups);
+                        const limit = freshUser.plan === 'Primary Pro' ? 2 : 0;
+
+                        if (proGroups.length > limit) {
+                            setLockedProGroups(proGroups.slice(limit));
 
                             // Initialize their deletion countdown timer (90 Days from downgradedAt)
                             const deadlineDate = new Date(freshUser.downgradedAt);
@@ -340,7 +342,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Locked Pro Groups (Deletion Timer) */}
-                        {user?.plan === 'Free Plan' && lockedProGroups.length > 0 && (
+                        {lockedProGroups.length > 0 && (
                             <div className="glass-card" style={{ padding: '2rem', borderTop: '4px solid #EF4444' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
                                     <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '0.5rem', borderRadius: '8px' }}>
@@ -349,7 +351,10 @@ const Dashboard = () => {
                                     <h2 className="outfit-font" style={{ fontSize: '1.25rem', fontWeight: 600, color: '#EF4444' }}>Locked Premium Workspaces</h2>
                                 </div>
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                    You have premium workspaces in your account. Since your downgrade, these have been locked. They will be <strong style={{ color: '#EF4444' }}>permanently deleted</strong> when the timer expires.
+                                    {user?.plan === 'Primary Pro'
+                                        ? 'You have premium workspaces that exceed your Primary Pro limit. Since your downgrade, these excess workspaces have been locked. They will be '
+                                        : 'You have premium workspaces in your account. Since your downgrade, these have been locked. They will be '}
+                                    <strong style={{ color: '#EF4444' }}>permanently deleted</strong> when the timer expires.
                                 </p>
 
                                 {deletionTimeLeft && (

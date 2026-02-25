@@ -16,10 +16,13 @@ export const adminService = {
     },
 
     // Apply an upgrade or downgrade manually to a user
-    updateUserPlan: async (userId, newPlan, durationDays) => {
+    updateUserPlan: async (userId, newPlan, durationDays, databaseUrl) => {
         if (!userId) throw new Error("A user ID is required to process an upgrade.");
 
-        let updateData = { plan: newPlan };
+        let updateData = {
+            plan: newPlan,
+            database_url: databaseUrl || null
+        };
 
         if (newPlan === 'Free Plan') {
             // Instant downgrade logic identical to natural authService logic
@@ -34,14 +37,19 @@ export const adminService = {
             updateData.downgraded_at = null; // Wipe out any lingering deletion timer!
         }
 
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('profiles')
             .update(updateData)
-            .eq('id', userId);
+            .eq('id', userId)
+            .select();
 
         if (error) {
             console.error("Admin upgrade error:", error);
             throw new Error(`Failed to apply the ${newPlan} to the targeted user.`);
+        }
+
+        if (!data || data.length === 0) {
+            throw new Error(`Execution Blocked by Database RLS Policy! You must execute the SQL bypass command to edit another user's profile.`);
         }
 
         return updateData;

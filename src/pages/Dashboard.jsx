@@ -12,9 +12,6 @@ const Dashboard = () => {
     const [apiMsg, setApiMsg] = useState({ text: '', type: '' });
     const [passwordData, setPasswordData] = useState({ current: '', new: '' });
     const [passwordMsg, setPasswordMsg] = useState({ text: '', type: '' });
-    const [dbUrlInput, setDbUrlInput] = useState('');
-    const [dbUrlMsg, setDbUrlMsg] = useState({ text: '', type: '' });
-    const [isEditingDbUrl, setIsEditingDbUrl] = useState(false);
     const [isEditingName, setIsEditingName] = useState(false);
     const [customNameInput, setCustomNameInput] = useState('');
     const [nameMsg, setNameMsg] = useState({ text: '', type: '' });
@@ -54,7 +51,6 @@ const Dashboard = () => {
             if (freshUser) {
                 setUser(freshUser);
                 setCustomNameInput(freshUser.name || '');
-                setDbUrlInput(freshUser.databaseUrl || '');
 
                 // Identify if they recently downgraded and have locked Pro groups pending deletion
                 if ((freshUser.plan === 'Free Plan' || freshUser.plan === 'Primary Pro') && freshUser.downgradedAt) {
@@ -171,37 +167,6 @@ const Dashboard = () => {
             }, 2000);
         } catch (err) {
             setNameMsg({ text: err.message, type: 'error' });
-        }
-    };
-
-    const handleSaveDbUrl = async () => {
-        setDbUrlMsg({ text: 'Saving...', type: 'info' });
-        try {
-            const updatedUser = await authService.updateDatabaseUrl(dbUrlInput);
-            setUser(updatedUser);
-            setDbUrlMsg({ text: 'Database URL successfully updated!', type: 'success' });
-            setTimeout(() => {
-                setIsEditingDbUrl(false);
-                setDbUrlMsg({ text: '', type: '' });
-            }, 2000);
-        } catch (err) {
-            setDbUrlMsg({ text: err.message, type: 'error' });
-        }
-    };
-
-    const handleDisconnectDbUrl = async () => {
-        if (!window.confirm("Are you sure you want to disconnect your database?\nYour desktop connections will fail until you provide a new one.")) return;
-        setDbUrlMsg({ text: 'Disconnecting...', type: 'info' });
-        try {
-            const updatedUser = await authService.updateDatabaseUrl(null);
-            setUser(updatedUser);
-            setDbUrlInput('');
-            setDbUrlMsg({ text: 'Database disconnected.', type: 'success' });
-            setTimeout(() => {
-                setDbUrlMsg({ text: '', type: '' });
-            }, 2000);
-        } catch (err) {
-            setDbUrlMsg({ text: err.message, type: 'error' });
         }
     };
 
@@ -409,7 +374,7 @@ const Dashboard = () => {
                             </div>
                         )}
 
-                        {/* Database URL Control */}
+                        {/* Database URL Control (Read Only) */}
                         <div className="glass-card" style={{ padding: '2rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -424,56 +389,39 @@ const Dashboard = () => {
                             </div>
 
                             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                Link an external PostgreSQL database. The desktop client will automatically configure its environment variables to store bot state remotely.
+                                TuNeXbot Pro includes isolated PostgreSQL database tracking. Our systems will automatically provision and manage your remote environment variables.
                             </p>
 
                             <div style={{ marginBottom: '1rem' }}>
-                                {isEditingDbUrl ? (
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        <input
-                                            type="password"
-                                            placeholder="postgresql://user:pass@host:5432/db"
-                                            value={dbUrlInput}
-                                            onChange={e => setDbUrlInput(e.target.value)}
-                                            disabled={user?.plan === 'Free Plan'}
-                                            style={{ width: '100%', padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
-                                            onFocus={e => e.target.style.borderColor = '#10B981'}
-                                            onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
-                                        />
-                                        <div style={{ display: 'flex', gap: '1rem' }}>
-                                            <button onClick={handleSaveDbUrl} className="btn" style={{ flex: 1, background: '#10B981', color: 'black', fontWeight: 600 }}>Save URL</button>
-                                            <button onClick={() => { setIsEditingDbUrl(false); setDbUrlInput(user?.databaseUrl || ''); setDbUrlMsg({ text: '', type: '' }); }} className="btn" style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white' }}>Cancel</button>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+
+                                    {user?.plan === 'Free Plan' ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
+                                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }}></div>
+                                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 500 }}>Not Eligible Active</span>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                        <code style={{ color: user?.databaseUrl ? '#10B981' : 'var(--text-secondary)', fontSize: '0.95rem', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '70%' }}>
-                                            {user?.databaseUrl ? 'postgresql://••••••••••••••••' : 'No Database Linked'}
-                                        </code>
-                                        {user?.databaseUrl ? (
-                                            <button
-                                                onClick={handleDisconnectDbUrl}
-                                                disabled={user?.plan === 'Free Plan'}
-                                                style={{ background: 'transparent', border: 'none', color: user?.plan === 'Free Plan' ? 'var(--text-secondary)' : '#EF4444', display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: user?.plan === 'Free Plan' ? 'not-allowed' : 'pointer', fontSize: '0.9rem', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
-                                            >
-                                                <Trash2 size={14} /> Disconnect
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={() => setIsEditingDbUrl(true)}
-                                                disabled={user?.plan === 'Free Plan'}
-                                                style={{ background: 'transparent', border: 'none', color: user?.plan === 'Free Plan' ? 'var(--text-secondary)' : '#10B981', display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: user?.plan === 'Free Plan' ? 'not-allowed' : 'pointer', fontSize: '0.9rem', opacity: user?.plan === 'Free Plan' ? 0.5 : 1 }}
-                                            >
-                                                <Edit2 size={14} /> Connect
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                                {dbUrlMsg.text && (
-                                    <div style={{ marginTop: '0.75rem', padding: '0.5rem', borderRadius: '6px', color: dbUrlMsg.type === 'error' ? '#EF4444' : (dbUrlMsg.type === 'info' ? 'var(--neon-cyan)' : '#10B981'), fontSize: '0.85rem', background: dbUrlMsg.type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)' }}>
-                                        {dbUrlMsg.text}
-                                    </div>
-                                )}
+                                    ) : user?.databaseUrl ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', justifyContent: 'space-between' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px rgba(16, 185, 129, 0.5)' }}></div>
+                                                <span style={{ color: 'white', fontSize: '0.95rem', fontWeight: 500 }}>Database Provisioned</span>
+                                            </div>
+                                            <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.1)', color: '#10B981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                                                ACTIVE
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', justifyContent: 'space-between' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F59E0B', animation: 'pulse 2s infinite' }}></div>
+                                                <span style={{ color: '#F59E0B', fontSize: '0.95rem', fontWeight: 500 }}>Awaiting Admin Provisioning...</span>
+                                            </div>
+                                            <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: '4px', background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+                                                PENDING
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 

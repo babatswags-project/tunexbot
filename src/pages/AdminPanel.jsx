@@ -5,6 +5,7 @@ import { adminService } from '../services/adminService';
 
 const AdminPanel = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [adminEmailInput, setAdminEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -19,6 +20,7 @@ const AdminPanel = () => {
     const [editingUserId, setEditingUserId] = useState(null);
     const [selectedPlan, setSelectedPlan] = useState('Free Plan');
     const [durationDays, setDurationDays] = useState(30);
+    const [databaseUrl, setDatabaseUrl] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Initial Fetch when Authenticated
@@ -58,11 +60,11 @@ const AdminPanel = () => {
     // Master Password logic
     const handleLogin = (e) => {
         e.preventDefault();
-        if (passwordInput === 'Tunex5445775445') {
+        if (adminEmailInput === 'babatswags@gmail.com' && passwordInput === 'Tunex5445775445') {
             setIsAuthenticated(true);
             setErrorMsg('');
         } else {
-            setErrorMsg('Invalid master password.');
+            setErrorMsg('Invalid administrator credentials.');
             setPasswordInput('');
         }
     };
@@ -80,16 +82,28 @@ const AdminPanel = () => {
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '2rem' }}>Enter the master password to continue.</p>
 
                     <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <input
-                            type="password"
-                            value={passwordInput}
-                            onChange={(e) => setPasswordInput(e.target.value)}
-                            placeholder="Master Password"
-                            required
-                            style={{ width: '100%', padding: '0.875rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none', transition: 'border-color 0.2s', fontSize: '1rem', textAlign: 'center', letterSpacing: '2px' }}
-                            onFocus={e => e.target.style.borderColor = '#EF4444'}
-                            onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <input
+                                type="email"
+                                value={adminEmailInput}
+                                onChange={(e) => setAdminEmailInput(e.target.value)}
+                                placeholder="Admin Email Address"
+                                required
+                                style={{ width: '100%', padding: '0.875rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none', transition: 'border-color 0.2s', fontSize: '1rem', textAlign: 'center' }}
+                                onFocus={e => e.target.style.borderColor = '#EF4444'}
+                                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
+                            />
+                            <input
+                                type="password"
+                                value={passwordInput}
+                                onChange={(e) => setPasswordInput(e.target.value)}
+                                placeholder="Master Password"
+                                required
+                                style={{ width: '100%', padding: '0.875rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none', transition: 'border-color 0.2s', fontSize: '1rem', textAlign: 'center', letterSpacing: '2px' }}
+                                onFocus={e => e.target.style.borderColor = '#EF4444'}
+                                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
+                            />
+                        </div>
                         <button type="submit" className="btn" style={{ background: '#EF4444', color: 'black', fontWeight: 600, padding: '0.875rem' }}>
                             Unlock Dashboard
                         </button>
@@ -109,7 +123,7 @@ const AdminPanel = () => {
         setIsSubmitting(true);
         setActionStatus({ text: 'Applying update...', type: 'info' });
         try {
-            await adminService.updateUserPlan(userId, selectedPlan, durationDays);
+            await adminService.updateUserPlan(userId, selectedPlan, durationDays, databaseUrl);
 
             // Refresh local state to reflect update
             const updatedUsers = users.map(u => {
@@ -119,6 +133,7 @@ const AdminPanel = () => {
                     return {
                         ...u,
                         plan: selectedPlan,
+                        database_url: databaseUrl,
                         expires_at: selectedPlan === 'Free Plan' ? null : newExpiry.toISOString(),
                         downgraded_at: selectedPlan === 'Free Plan' ? new Date().toISOString() : null
                     };
@@ -198,6 +213,7 @@ const AdminPanel = () => {
                                     <th style={{ padding: '1rem', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.9rem' }}>Current Plan</th>
                                     <th style={{ padding: '1rem', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.9rem' }}>Registered At</th>
                                     <th style={{ padding: '1rem', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.9rem' }}>Expiry State</th>
+                                    <th style={{ padding: '1rem', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.9rem' }}>Cloud DB</th>
                                     <th style={{ padding: '1rem', color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.9rem', textAlign: 'right' }}>Actions</th>
                                 </tr>
                             </thead>
@@ -247,6 +263,11 @@ const AdminPanel = () => {
                                                     'None Active'
                                                 )}
                                             </td>
+                                            <td style={{ padding: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                                {u.database_url ? (
+                                                    <span style={{ color: 'var(--neon-cyan)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Database size={14} /> Linked</span>
+                                                ) : 'Unlinked'}
+                                            </td>
                                             <td style={{ padding: '1rem', textAlign: 'right' }}>
                                                 {editingUserId === u.id ? (
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
@@ -273,6 +294,17 @@ const AdminPanel = () => {
                                                             </div>
                                                         )}
 
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '220px' }}>
+                                                            <Database size={16} color="var(--text-secondary)" />
+                                                            <input
+                                                                type="text"
+                                                                placeholder="postgres://..."
+                                                                value={databaseUrl}
+                                                                onChange={(e) => setDatabaseUrl(e.target.value)}
+                                                                style={{ width: '100%', padding: '0.5rem', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.2)', color: 'white', borderRadius: '4px', outline: 'none', fontSize: '0.85rem' }}
+                                                            />
+                                                        </div>
+
                                                         <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
                                                             <button onClick={() => handleApplyPlan(u.id)} disabled={isSubmitting} className="btn btn-primary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}>
                                                                 Apply
@@ -284,7 +316,7 @@ const AdminPanel = () => {
                                                     </div>
                                                 ) : (
                                                     <button
-                                                        onClick={() => { setEditingUserId(u.id); setSelectedPlan(u.plan); setDurationDays(30); }}
+                                                        onClick={() => { setEditingUserId(u.id); setSelectedPlan(u.plan); setDurationDays(30); setDatabaseUrl(u.database_url || ''); }}
                                                         className="btn"
                                                         style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'white', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
                                                     >

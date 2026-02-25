@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Key, User, CreditCard, RefreshCw, LogOut, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Edit2, Clock, Eye, EyeOff, Database, Trash2 } from 'lucide-react';
+import { Key, User, CreditCard, RefreshCw, LogOut, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Edit2, Clock, Eye, EyeOff, Database, Trash2, Lock } from 'lucide-react';
 import { WHATSAPP_LINK } from '../config';
 
 const Dashboard = () => {
@@ -20,6 +20,8 @@ const Dashboard = () => {
     const [nameMsg, setNameMsg] = useState({ text: '', type: '' });
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [timeLeft, setTimeLeft] = useState(null);
+    const [lockedProGroups, setLockedProGroups] = useState([]);
+    const [deletionTimeLeft, setDeletionTimeLeft] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -53,6 +55,28 @@ const Dashboard = () => {
                 setUser(freshUser);
                 setCustomNameInput(freshUser.name || '');
                 setDbUrlInput(freshUser.databaseUrl || '');
+
+                // Identify if they recently downgraded and have locked Pro groups pending deletion
+                if (freshUser.plan === 'Free Plan' && freshUser.downgradedAt) {
+                    try {
+                        const groups = await authService.fetchUserGroups(freshUser.apiKey);
+                        const proGroups = groups.filter(g => g.plan_type === 'Pro');
+                        if (proGroups.length > 0) {
+                            setLockedProGroups(proGroups);
+
+                            // Initialize their deletion countdown timer (90 Days from downgradedAt)
+                            const deadlineDate = new Date(freshUser.downgradedAt);
+                            deadlineDate.setDate(deadlineDate.getDate() + 90);
+
+                            setDeletionTimeLeft(calculateTimeLeft(deadlineDate.toISOString()));
+                            setInterval(() => {
+                                setDeletionTimeLeft(calculateTimeLeft(deadlineDate.toISOString()));
+                            }, 1000);
+                        }
+                    } catch (err) {
+                        console.error('Failed to fetch Pro groups for Free plan user:', err);
+                    }
+                }
             }
             setLoading(false);
 
@@ -314,6 +338,71 @@ const Dashboard = () => {
                                 </button>
                             )}
                         </div>
+
+                        {/* Locked Pro Groups (Deletion Timer) */}
+                        {user?.plan === 'Free Plan' && lockedProGroups.length > 0 && (
+                            <div className="glass-card" style={{ padding: '2rem', borderTop: '4px solid #EF4444' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                                    <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '0.5rem', borderRadius: '8px' }}>
+                                        <Lock color="#EF4444" size={24} />
+                                    </div>
+                                    <h2 className="outfit-font" style={{ fontSize: '1.25rem', fontWeight: 600, color: '#EF4444' }}>Locked Premium Workspaces</h2>
+                                </div>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                                    You have premium workspaces in your account. Since your downgrade, these have been locked. They will be <strong style={{ color: '#EF4444' }}>permanently deleted</strong> when the timer expires.
+                                </p>
+
+                                {deletionTimeLeft && (
+                                    <div style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '1.25rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#EF4444', marginBottom: '0.75rem', fontSize: '0.9rem', fontWeight: 600 }}>
+                                            <AlertTriangle size={16} /> Time Until Permanent Deletion
+                                        </div>
+                                        {deletionTimeLeft.expired ? (
+                                            <div style={{ color: '#EF4444', fontWeight: 600, fontSize: '1.1rem' }}>Data Flagged for Deletion</div>
+                                        ) : (
+                                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                                <div style={{ textAlign: 'center', flex: 1 }}>
+                                                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FCA5A5' }}>{deletionTimeLeft.days}</div>
+                                                    <div style={{ fontSize: '0.7rem', color: 'rgba(239, 68, 68, 0.8)' }}>DAYS</div>
+                                                </div>
+                                                <div style={{ color: 'rgba(239, 68, 68, 0.5)', fontSize: '1.5rem', fontWeight: 800 }}>:</div>
+                                                <div style={{ textAlign: 'center', flex: 1 }}>
+                                                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FCA5A5' }}>{deletionTimeLeft.hours.toString().padStart(2, '0')}</div>
+                                                    <div style={{ fontSize: '0.7rem', color: 'rgba(239, 68, 68, 0.8)' }}>HRS</div>
+                                                </div>
+                                                <div style={{ color: 'rgba(239, 68, 68, 0.5)', fontSize: '1.5rem', fontWeight: 800 }}>:</div>
+                                                <div style={{ textAlign: 'center', flex: 1 }}>
+                                                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FCA5A5' }}>{deletionTimeLeft.minutes.toString().padStart(2, '0')}</div>
+                                                    <div style={{ fontSize: '0.7rem', color: 'rgba(239, 68, 68, 0.8)' }}>MIN</div>
+                                                </div>
+                                                <div style={{ color: 'rgba(239, 68, 68, 0.5)', fontSize: '1.5rem', fontWeight: 800 }}>:</div>
+                                                <div style={{ textAlign: 'center', flex: 1 }}>
+                                                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FCA5A5' }}>{deletionTimeLeft.seconds.toString().padStart(2, '0')}</div>
+                                                    <div style={{ fontSize: '0.7rem', color: 'rgba(239, 68, 68, 0.8)' }}>SEC</div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                <div style={{ display: 'grid', gap: '0.75rem' }}>
+                                    {lockedProGroups.map(group => (
+                                        <div key={group.id || group.group_name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#EF4444' }}></div>
+                                                <span style={{ color: 'white', fontWeight: 500 }}>{group.group_name}</span>
+                                            </div>
+                                            <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: '4px', background: 'rgba(139, 92, 246, 0.1)', color: 'var(--neon-violet-light)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+                                                PRO
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="btn btn-primary" onClick={() => setShowUpgradeModal(true)} style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '1.5rem', background: 'rgba(139, 92, 246, 0.1)', color: 'var(--neon-violet-light)', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+                                    Upgrade to Restore Access
+                                </button>
+                            </div>
+                        )}
 
                         {/* Database URL Control */}
                         <div className="glass-card" style={{ padding: '2rem' }}>

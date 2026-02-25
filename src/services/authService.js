@@ -68,6 +68,7 @@ export const authService = {
     _processPlanLogic: async (profileData) => {
         let plan = profileData.plan;
         let expiresAt = profileData.expires_at;
+        let downgradedAt = profileData.downgraded_at;
         let needsDbUpdate = false;
 
         // 1. If admin upgraded the plan in the DB but didn't set a date, automatically give 30 days
@@ -75,20 +76,37 @@ export const authService = {
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + 30);
             expiresAt = expiryDate.toISOString();
+            downgradedAt = null; // Reset downgrade timer on upgrade
             needsDbUpdate = true;
         }
-        // 2. If the plan has expired, instantly downgrade back to Free Plan
+        // 2. If the plan has automatically expired, instantly downgrade back to Free Plan
         else if (plan !== 'Free Plan' && expiresAt && new Date(expiresAt) <= new Date()) {
             plan = 'Free Plan';
             expiresAt = null;
+            downgradedAt = new Date().toISOString(); // Capture the exact moment of downgrade
+            needsDbUpdate = true;
+        }
+        // 3. Catch direct Admin/DB edits: If they are on Free Plan now but downgraded_at is missing, they were manually downgraded
+        else if (plan === 'Free Plan' && !downgradedAt) {
+            downgradedAt = new Date().toISOString();
+            expiresAt = null;
+            needsDbUpdate = true;
+        }
+        // 4. Catch direct Admin/DB edits: If they are on a Pro Plan but downgraded_at is lingering, clear it
+        else if (plan !== 'Free Plan' && downgradedAt) {
+            downgradedAt = null;
             needsDbUpdate = true;
         }
 
         if (needsDbUpdate && profileData.id) {
-            await supabase.from('profiles').update({ plan: plan, expires_at: expiresAt }).eq('id', profileData.id);
+            await supabase.from('profiles').update({
+                plan: plan,
+                expires_at: expiresAt,
+                downgraded_at: downgradedAt
+            }).eq('id', profileData.id);
         }
 
-        return { plan, expiresAt };
+        return { plan, expiresAt, downgradedAt };
     },
 
     // Login a user
@@ -118,7 +136,7 @@ export const authService = {
                 throw new Error("Logged in, but failed to fetch user profile.");
             }
 
-            const { plan, expiresAt } = await authService._processPlanLogic(profileData);
+            const { plan, expiresAt, downgradedAt } = await authService._processPlanLogic(profileData);
 
             const user = {
                 id: data.user.id,
@@ -127,6 +145,7 @@ export const authService = {
                 plan: plan,
                 apiKey: profileData.api_key,
                 expiresAt: expiresAt,
+                downgradedAt: downgradedAt,
                 databaseUrl: profileData.database_url,
                 createdAt: profileData.created_at
             };
@@ -179,7 +198,7 @@ export const authService = {
 
         if (error || !profileData) return null;
 
-        const { plan, expiresAt } = await authService._processPlanLogic(profileData);
+        const { plan, expiresAt, downgradedAt } = await authService._processPlanLogic(profileData);
 
         const user = {
             id: session.user.id,
@@ -188,6 +207,7 @@ export const authService = {
             plan: plan,
             apiKey: profileData.api_key,
             expiresAt: expiresAt,
+            downgradedAt: downgradedAt,
             databaseUrl: profileData.database_url,
             createdAt: profileData.created_at
         };
@@ -293,5 +313,22 @@ export const authService = {
 
         // Update local session
         return await authService.syncUserFromDB();
+    },
+
+    // Fetch user groups for the dashboard
+    fetchUserGroups: async (apiKey) => {
+        if (!apiKey) throw new Error("API Key is missing, unable to fetch groups.");
+
+        const { data, error } = await supabase
+            .from('user_groups')
+            .select('*')
+            .eq('api_key', apiKey);
+
+        if (error) {
+            console.error("Error fetching user groups:", error);
+            throw new Error("Failed to fetch workspaces.");
+        }
+
+        return data || [];
     }
 };

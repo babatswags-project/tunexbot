@@ -42,7 +42,7 @@ const Hero = () => {
             <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '999px', marginBottom: '2rem', backdropFilter: 'blur(10px)' }}>
                     <span className="animate-pulse" style={{ display: 'block', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--neon-cyan)', boxShadow: '0 0 15px 2px var(--neon-cyan)' }}></span>
-                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--neon-cyan)' }}>TuNeXbot v1.0.0 is Live</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--neon-cyan)' }}>TuNeXbot v1.0 is Live</span>
                 </div>
 
                 <h1 className="outfit-font" style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>

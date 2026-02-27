@@ -13,6 +13,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import ResetPassword from './pages/ResetPassword';
 import AdminPanel from './pages/AdminPanel';
+import HowToLaunch from './pages/HowToLaunch';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/features/breakdown" element={<FeatureBreakdown />} />
+        <Route path="/how-to-launch" element={<HowToLaunch />} />
         <Route path="/legal/refund" element={<RefundPolicy />} />
         <Route path="/legal/terms" element={<Terms />} />
         <Route path="/legal/privacy" element={<Privacy />} />

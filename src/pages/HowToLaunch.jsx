@@ -8,15 +8,15 @@ const HowToLaunch = () => {
 
             <h3 className="outfit-font" style={{ color: 'white', fontSize: '1.5rem', marginBottom: '1rem' }}>1. Command Line Arguments</h3>
             <p style={{ marginBottom: '1rem' }}>
-                TunexBot can be launched with various arguments to control its behavior. Use the following flags when running the bot script (e.g., <code>node bot.js [args]</code>):
+                TunexBot can be launched with various arguments to control its behavior. Use the following flags to customize your session:
             </p>
             <ul style={{ listStyle: 'disc', paddingLeft: '2rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                 <li><strong>f</strong>: Launch in <strong>Manual Mode</strong>. The bot will open Google and let you take control while keeping fingerprinting and proxy protections active.</li>
                 <li><strong>a</strong>: Launch in <strong>Ordered Mode</strong>. Sessions will run sequentially from the start of the range to the end of the user agent list.</li>
-                <li><strong>r [count]</strong>: Launch <strong>Random</strong> sessions. Requires a count (e.g., <code>node bot.js r 5</code>).</li>
+                <li><strong>r [count]</strong>: Launch <strong>Random</strong> sessions. Requires a count (e.g., <code>r 5</code>).</li>
                 <li><strong>session_X</strong>: Launch a specific session (e.g., <code>session_0</code>).</li>
                 <li><strong>session_X-session_Y</strong>: Launch a <strong>Range</strong> of sessions (e.g., <code>session_10-session_20</code>).</li>
-                <li><strong>[number]</strong>: Set the <strong>Concurrency</strong>. For example, <code>node bot.js 10</code> will keep 10 active bots running.</li>
+                <li><strong>[number]</strong>: Set the <strong>Concurrency</strong>. For example, <code>10</code> will keep 10 active bots running.</li>
             </ul>
 
             <h3 className="outfit-font" style={{ color: 'white', fontSize: '1.5rem', marginBottom: '1rem', marginTop: '2rem' }}>2. Task Configuration (xpath.txt)</h3>

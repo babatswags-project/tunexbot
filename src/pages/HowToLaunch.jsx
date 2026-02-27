@@ -13,7 +13,6 @@ const HowToLaunch = () => {
             <ul style={{ listStyle: 'disc', paddingLeft: '2rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                 <li><strong>f</strong>: Launch in <strong>Manual Mode</strong>. The bot will open Google and let you take control while keeping fingerprinting and proxy protections active.</li>
                 <li><strong>a</strong>: Launch in <strong>Ordered Mode</strong>. Sessions will run sequentially from the start of the range to the end of the user agent list.</li>
-                <li><strong>r [count]</strong>: Launch <strong>Random</strong> sessions. Requires a count (e.g., <code>r 5</code>).</li>
                 <li><strong>session_X</strong>: Launch a specific session (e.g., <code>session_0</code>).</li>
                 <li><strong>session_X-session_Y</strong>: Launch a <strong>Range</strong> of sessions (e.g., <code>session_10-session_20</code>).</li>
                 <li><strong>[number]</strong>: Set the <strong>Concurrency</strong>. For example, <code>10</code> will keep 10 active bots running.</li>
